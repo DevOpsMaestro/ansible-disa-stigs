@@ -60,7 +60,7 @@ git clone git@github.com:DevOpsMaestro/ansible-disa-stigs.git
 cd ansible-disa-stigs
 ```
 
-Manually adjust the ``hosts`` file inventory to your IP address under ``[servers]``
+Manually adjust the ``hosts`` file inventory to the IP address of the instance under ``[servers]``
 Then run:
 ```sh
 ansible-playbook -vvv ./rhel7-stig-playbook.yml
