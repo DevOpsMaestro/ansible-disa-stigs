@@ -1,0 +1,10 @@
+---
+
+- name: run the stig against my rhel7 servers
+  hosts: servers
+  roles:
+    - role: rhel7-stig
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_major_version | version_compare('7', '=')
+...

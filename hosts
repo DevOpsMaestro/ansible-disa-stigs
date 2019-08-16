@@ -1,0 +1,7 @@
+## Ansible Hosts File for Lab
+
+[servers]
+172.16.0.10
+
+
+
