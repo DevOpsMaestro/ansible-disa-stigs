@@ -50,6 +50,24 @@ oscap xccdf eval --results /var/tmp/$(hostname).pre.patch.comp.results.xml --rep
 oscap xccdf eval --profile stig-rhel7-disa --results /var/tmp/$(hostname).pre.compliance.results.xml --report /var/tmp/$(hostname).pre.compliance.report.html --cpe /usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml /usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml
 ```
 
+# Pre-install for AIDE (Advanced Intrusion Detection Engine)
+Install software and run first time to initialize the database:
+```sh
+yum install -y aide
+cp /etc/aide.conf /etc/aide.conf_orig
+
+sed -i '/^NORMAL=.*$/a ## Custom names\nSizeOnly = s+b\nSizeAndChecksum = s+b+md5+sha1\nReallyParanoid = p+i+n+u+g+s+b+m+a+c+md5+sha1+rmd160+tiger\n\n' /etc/aide.conf
+
+sed -i '/Put file matches before directories/a /boot   ReallyParanoid\n/bin    ReallyParanoid\n/sbin   ReallyParanoid\n' /etc/aide.conf
+sed -i '/sbin   ReallyParanoid/a /lib    ReallyParanoid\n/lib64  ReallyParanoid\n/opt    ReallyParanoid\n' /etc/aide.conf
+sed -i '/opt    ReallyParanoid/a /usr    ReallyParanoid\n/root   ReallyParanoid\n' /etc/aide.conf
+printf '!/opt/rh/python27/root/.*\n' >> /etc/aide.conf
+
+aide  --init
+mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+```
+
 
 ## Playbook install and run:
 Get the repo
@@ -67,7 +85,7 @@ ansible-playbook -vvv ./rhel7-stig-playbook.yml
 ```
 
 
-## Post-Check STIG compliance after stigging with Ansible
+## Post-Check STIG compliance after STIG'ing with Ansible
 *You really don't need to do this unless you want to know what changed*
 ssh to test instance and elevate your user to root
 ```sh
@@ -76,7 +94,6 @@ oscap xccdf eval --results /var/tmp/$(hostname).post.patch.comp.results.xml --re
 
 oscap xccdf eval --profile stig-rhel7-disa --results /var/tmp/$(hostname).post.compliance.results.xml --report /var/tmp/$(hostname).post.compliance.report.html --cpe /usr/share/xml/scap/ssg/content/ssg-rhel7-cpe-dictionary.xml /usr/share/xml/scap/ssg/content/ssg-rhel7-xccdf.xml
 ```
-
  
 *On Laptop*
 ```sh
@@ -87,7 +104,11 @@ scp user_name@172.16.0.10:/var/tmp/* .
 
 Review the output of both ``$(hostname).pre.compliance.report.html`` and ``$(hostname).post.compliance.report.html`` files in your browser.
 
-
+## Post-check AIDE for what the STIG did
+*SSH back into the instance/server*
+```sh
+aide --check | tee -a /var/tmp/aide_report.txt
+```
 
 
 
