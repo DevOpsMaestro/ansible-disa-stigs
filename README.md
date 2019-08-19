@@ -56,7 +56,7 @@ Install software and run first time to initialize the database:
 yum install -y aide
 cp /etc/aide.conf /etc/aide.conf_orig
 
-sed -i '/^NORMAL=.*$/a ## Custom names\nSizeOnly = s+b\nSizeAndChecksum = s+b+md5+sha1\nReallyParanoid = p+i+n+u+g+s+b+m+a+c+md5+sha1+rmd160+tiger\n\n' /etc/aide.conf
+sed -i '/^NORMAL[ ]=.*$/a ## Custom names\nSizeOnly = s+b\nSizeAndChecksum = s+b+md5+sha1\nReallyParanoid = p+i+n+u+g+s+b+m+a+c+md5+sha1+rmd160+tiger\n\n' /etc/aide.conf
 
 sed -i '/Put file matches before directories/a /boot   ReallyParanoid\n/bin    ReallyParanoid\n/sbin   ReallyParanoid\n' /etc/aide.conf
 sed -i '/sbin   ReallyParanoid/a /lib    ReallyParanoid\n/lib64  ReallyParanoid\n/opt    ReallyParanoid\n' /etc/aide.conf
