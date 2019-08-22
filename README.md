@@ -32,6 +32,14 @@ ssh-copy-id -i ~/.ssh/id_rsa goldenleg@172.16.0.10
 ssh-copy-id -i ~/.ssh/id_rsa root@172.16.0.10
 ```
 
+My test server has the user ``goldenleg`` setup as an admin user (in the wheel group)
+Make sure that the file ``/etc/sudoers`` has this block:
+```sh
+## Same thing without a password
+# %wheel	ALL=(ALL)	PASSWD: ALL
+goldenleg ALL=(ALL) PASSWD: ALL 
+```
+
 ## Pre-install openscap in order to captue pre-STIG lockdown status
 *You really don't need to do this unless you want to know what changed*
 
