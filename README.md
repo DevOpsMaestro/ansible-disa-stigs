@@ -22,14 +22,18 @@ pip -V
 
 Install ansible and passlib, required for disa-stig module.
 ```sh
-pip install ansible==2.4.1
-pip install passlib==1.7.1
+sudo -H pip install ansible==2.4.1
+sudo -H pip install passlib==1.7.1
+```
+
+For performance gains with Ansible, install mitogen.
+```sh
+sudo -H pip install mitogen
 ```
 
 Push my SSH key to the instance as both my  user account and also the root account.
 ```sh
 ssh-copy-id -i ~/.ssh/id_rsa goldenleg@172.16.0.10
-ssh-copy-id -i ~/.ssh/id_rsa root@172.16.0.10
 ```
 
 My test server has the user ``goldenleg`` setup as an admin user (in the wheel group)
