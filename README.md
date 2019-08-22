@@ -40,8 +40,8 @@ My test server has the user ``goldenleg`` setup as an admin user (in the wheel g
 Make sure that the file ``/etc/sudoers`` has this block:
 ```sh
 ## Same thing without a password
-# %wheel	ALL=(ALL)	PASSWD: ALL
-goldenleg ALL=(ALL) PASSWD: ALL 
+# %wheel	ALL=(ALL)	NOPASSWD: ALL
+goldenleg ALL=(ALL) NOPASSWD: ALL 
 ```
 
 ## Pre-install openscap in order to captue pre-STIG lockdown status
