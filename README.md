@@ -76,7 +76,7 @@ sed -i '/opt    ReallyParanoid/a /usr    ReallyParanoid\n/root   ReallyParanoid\
 printf '!/opt/rh/python27/root/.*\n' >> /etc/aide.conf
 
 aide  --init
-mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.pre.stig.gz
 
 ```
 
@@ -119,10 +119,8 @@ Review the output of both ``$(hostname).pre.compliance.report.html`` and ``$(hos
 ## Post-check AIDE for what the STIG did
 *SSH back into the instance/server*
 ```sh
+unalias cp
+cp -f /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.from.inside.ansible.stig.run.gz
+cp -f /var/lib/aide/aide.db.pre.stig.gz /var/lib/aide/aide.db.gz
 aide --check | tee -a /var/tmp/aide_report.txt
 ```
-
-
-
-
-
